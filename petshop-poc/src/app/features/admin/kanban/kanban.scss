@@ -1,0 +1,198 @@
+.page {
+  padding: 32px;
+  animation: fadeUp .25s ease;
+}
+
+.page-header {
+  margin-bottom: 24px;
+
+  h1 {
+    font-family: var(--ff-head);
+    font-size: 1.8rem;
+    color: var(--navy);
+    font-weight: 400;
+  }
+
+  p {
+    color: var(--muted);
+    font-size: 0.88rem;
+    margin-top: 4px;
+  }
+}
+
+/* ── STATS ── */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 20px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  .stat-icon { font-size: 22px; }
+  .stat-value { font-family: var(--ff-head); font-size: 2rem; color: var(--navy); line-height: 1; }
+  .stat-label { font-size: 0.78rem; color: var(--muted); font-weight: 500; }
+}
+
+/* ── KANBAN ── */
+.kanban-board {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding-bottom: 16px;
+  align-items: flex-start;
+}
+
+.kanban-col {
+  min-width: 260px;
+  width: 260px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.kanban-col-head {
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-top: 3px solid;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: var(--shadow);
+
+  .col-icon { font-size: 16px; }
+  .col-title { font-size: 0.82rem; font-weight: 600; flex: 1; color: var(--ink); }
+}
+
+.kanban-count {
+  font-size: 0.7rem;
+  font-weight: 700;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  flex-shrink: 0;
+}
+
+.kanban-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.kanban-card {
+  background: var(--card);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  padding: 14px;
+  box-shadow: var(--shadow);
+  animation: fadeUp .2s ease;
+  transition: var(--transition);
+
+  &:hover { box-shadow: var(--shadow-lg); }
+}
+
+.kc-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.kc-pet {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--navy);
+}
+
+.kc-servico {
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.kc-hora {
+  font-size: 0.72rem;
+  font-weight: 600;
+  background: var(--sage-xxl);
+  color: var(--sage);
+  padding: 3px 8px;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.kc-dono,
+.kc-date {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.76rem;
+  color: var(--muted);
+  margin-top: 4px;
+
+  .material-icons { font-size: 13px; }
+}
+
+.kc-actions {
+  margin-top: 12px;
+}
+
+.btn-avancar {
+  width: 100%;
+  padding: 8px 12px;
+  background: var(--sage);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-family: var(--ff-body);
+  transition: var(--transition);
+
+  .material-icons { font-size: 15px; }
+
+  &:hover { background: var(--sage-l); }
+}
+
+.kc-done {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: #15803d;
+
+  .material-icons { font-size: 16px; }
+}
+
+.kanban-empty {
+  padding: 28px 14px;
+  text-align: center;
+  color: var(--muted-l);
+  font-size: 0.8rem;
+  border: 2px dashed var(--border);
+  border-radius: var(--radius-sm);
+
+  .material-icons { font-size: 24px; display: block; margin-bottom: 6px; opacity: .4; }
+}

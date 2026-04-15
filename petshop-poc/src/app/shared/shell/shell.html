@@ -1,0 +1,45 @@
+<div class="app-shell">
+
+  <!-- ── SIDEBAR ── -->
+  <nav class="sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-paw">
+        <span class="material-icons">pets</span>
+      </div>
+      <div class="sidebar-brand-text">
+        <h2>PetShop</h2>
+        <span>{{ roleLabel }}</span>
+      </div>
+    </div>
+
+    <div class="sidebar-nav">
+      <span class="nav-section-label">Menu</span>
+      <a
+        *ngFor="let item of navItems"
+        class="nav-item"
+        [routerLink]="item.route"
+        routerLinkActive="active"
+      >
+        <span class="material-icons">{{ item.icon }}</span>
+        {{ item.label }}
+      </a>
+    </div>
+
+    <div class="sidebar-user" *ngIf="usuario">
+      <div class="user-avatar">{{ initials }}</div>
+      <div class="user-info">
+        <div class="user-name">{{ usuario.nome }}</div>
+        <div class="user-role">{{ roleLabel }}</div>
+      </div>
+      <button class="btn-logout" (click)="sair()" title="Sair">
+        <span class="material-icons">logout</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ── CONTENT ── -->
+  <main class="main-content">
+    <ng-content />
+  </main>
+
+</div>

@@ -1,0 +1,179 @@
+<ng-container *ngIf="usuario$ | async as usuario">
+<app-shell [navItems]="navItems" roleLabel="Área do Cliente">
+
+  <div class="page">
+
+    <!-- ── PAGE HEADER ── -->
+    <div class="page-header">
+      <div class="page-title-row">
+        <div>
+          <h1>Olá, {{ usuario.nome.split(' ')[0] }} 👋</h1>
+          <p>Gerencie seus pets e agendamentos em um só lugar.</p>
+        </div>
+        <div class="header-actions">
+          <button class="btn-action outline" (click)="activeTab = 'pets'">
+            <span class="material-icons">pets</span> Pets
+          </button>
+          <button class="btn-action primary" (click)="activeTab = 'agendamentos'">
+            <span class="material-icons">event</span> Agendamentos
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════ ABA: PETS ══════ -->
+    <ng-container *ngIf="activeTab === 'pets'">
+
+      <div class="section-header">
+        <h2 class="section-title">Meus Pets</h2>
+        <button class="btn-action primary" (click)="showPetForm = !showPetForm">
+          <span class="material-icons">add</span> Cadastrar Pet
+        </button>
+      </div>
+
+      <!-- Formulário novo pet -->
+      <div class="form-card" *ngIf="showPetForm">
+        <h3 class="form-title">Novo Pet</h3>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Nome do Pet *</label>
+            <input class="form-input" [(ngModel)]="novoPet.nome" placeholder="Ex: Rex" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Espécie *</label>
+            <input class="form-input" [(ngModel)]="novoPet.especie" placeholder="Cachorro, Gato..." />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Raça</label>
+            <input class="form-input" [(ngModel)]="novoPet.raca" placeholder="Labrador, Siamês..." />
+          </div>
+          <div class="form-group">
+            <label class="form-label">CPF do Dono</label>
+            <input class="form-input" [(ngModel)]="novoPet.donoCpf" placeholder="000.000.000-00" />
+          </div>
+        </div>
+        <div class="form-actions">
+          <button class="btn-action outline" (click)="showPetForm = false">Cancelar</button>
+          <button class="btn-action primary" (click)="adicionarPet(usuario)">
+            <span class="material-icons">save</span> Salvar Pet
+          </button>
+        </div>
+      </div>
+
+      <!-- Grid de pets -->
+      <ng-container *ngIf="pets$ | async as pets">
+        <div class="pets-grid">
+          <div class="pet-card" *ngFor="let pet of pets">
+            <span class="pet-emoji">{{ petEmoji(pet.especie) }}</span>
+            <div class="pet-name">{{ pet.nome }}</div>
+            <div class="pet-detail">{{ pet.especie }}{{ pet.raca ? ' · ' + pet.raca : '' }}</div>
+          </div>
+
+          <!-- Card add -->
+          <div class="pet-add-card" (click)="showPetForm = true">
+            <span class="material-icons">add_circle_outline</span>
+            <span>Adicionar pet</span>
+          </div>
+        </div>
+
+        <div class="empty-state" *ngIf="pets.length === 0 && !showPetForm">
+          <span class="material-icons">sentiment_dissatisfied</span>
+          <p>Nenhum pet cadastrado ainda.</p>
+        </div>
+      </ng-container>
+    </ng-container>
+
+    <!-- ══════ ABA: AGENDAMENTOS ══════ -->
+    <ng-container *ngIf="activeTab === 'agendamentos'">
+
+      <div class="section-header">
+        <h2 class="section-title">Meus Agendamentos</h2>
+        <ng-container *ngIf="pets$ | async as petsCheck">
+          <button class="btn-action primary" (click)="showAgendamentoForm = !showAgendamentoForm" [disabled]="petsCheck.length === 0">
+            <span class="material-icons">event_available</span> Agendar Serviço
+          </button>
+        </ng-container>
+      </div>
+
+      <!-- Formulário agendamento -->
+      <div class="form-card" *ngIf="showAgendamentoForm">
+        <h3 class="form-title">Novo Agendamento</h3>
+        <div class="form-grid">
+
+          <!-- Passo 1: Pet -->
+          <div class="form-group full-col">
+            <label class="form-label step-label">
+              <span class="step-num">1</span> Escolha o pet
+            </label>
+            <ng-container *ngIf="pets$ | async as pets">
+              <select class="form-input" [(ngModel)]="novoAgendamento.petId">
+                <option value="" disabled>Selecione...</option>
+                <option *ngFor="let p of pets" [value]="p.id">{{ p.nome }}</option>
+              </select>
+            </ng-container>
+          </div>
+
+          <!-- Passo 2: Serviço -->
+          <div class="form-group full-col">
+            <label class="form-label step-label">
+              <span class="step-num">2</span> Escolha o serviço
+            </label>
+            <div class="servicos-grid">
+              <button
+                class="servico-btn"
+                *ngFor="let s of servicos"
+                [class.selected]="novoAgendamento.servico === s"
+                (click)="novoAgendamento.servico = s"
+              >
+                <span class="material-icons">{{ servicoIcons[s] }}</span>
+                {{ s }}
+              </button>
+            </div>
+          </div>
+
+          <!-- Passo 3: Data -->
+          <div class="form-group full-col">
+            <label class="form-label step-label">
+              <span class="step-num">3</span> Data e horário
+            </label>
+            <input class="form-input" type="datetime-local" [(ngModel)]="novoAgendamento.dataHora" />
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button class="btn-action outline" (click)="showAgendamentoForm = false">Cancelar</button>
+          <ng-container *ngIf="pets$ | async as pets">
+            <button class="btn-action primary" (click)="agendar(usuario, pets)">
+              <span class="material-icons">check</span> Confirmar Agendamento
+            </button>
+          </ng-container>
+        </div>
+      </div>
+
+      <!-- Lista de agendamentos -->
+      <ng-container *ngIf="agendamentos$ | async as agendamentos">
+        <div class="agend-list">
+          <div class="agend-row" *ngFor="let ag of agendamentos">
+            <div class="agend-icon">
+              <span class="material-icons">{{ servicoIcons[ag.servico] || 'event' }}</span>
+            </div>
+            <div class="agend-info">
+              <div class="agend-title">{{ ag.petNome }} — {{ ag.servico }}</div>
+              <div class="agend-sub">{{ ag.dataHora | date: 'dd/MM/yyyy' }} às {{ ag.dataHora | date: 'HH:mm' }}</div>
+            </div>
+            <span class="status-badge" [ngClass]="statusClass(ag.status)">{{ ag.status }}</span>
+          </div>
+        </div>
+
+        <div class="empty-state" *ngIf="agendamentos.length === 0">
+          <span class="material-icons">event_busy</span>
+          <p>Nenhum agendamento encontrado.</p>
+        </div>
+      </ng-container>
+
+    </ng-container>
+
+  </div>
+
+</app-shell>
+</ng-container>

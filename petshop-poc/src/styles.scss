@@ -1,0 +1,74 @@
+@use '@angular/material' as mat;
+
+html {
+  height: 100%;
+  @include mat.theme((
+    color: (
+      primary: mat.$azure-palette,
+      tertiary: mat.$blue-palette,
+    ),
+    typography: Roboto,
+    density: 0,
+  ));
+}
+
+/* ── RESET & TOKENS ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --sage:     #4a7c59;
+  --sage-l:   #6a9b78;
+  --sage-xl:  #c8dece;
+  --sage-xxl: #f4f9f5;
+  --rust:     #c0583a;
+  --rust-l:   #e07a5f;
+  --amber:    #e9a84c;
+  --navy:     #1e2d40;
+  --navy-m:   #2d4055;
+  --ink:      #1a1f2e;
+  --muted:    #6b7280;
+  --muted-l:  #9ca3af;
+  --border:   #e2e8e4;
+  --surface:  #f8faf8;
+  --card:     #ffffff;
+  --shadow:   0 1px 3px rgba(0,0,0,.06), 0 4px 16px rgba(0,0,0,.06);
+  --shadow-lg:0 8px 32px rgba(0,0,0,.12);
+  --radius:   14px;
+  --radius-sm:8px;
+  --ff-head:  'Georgia', serif;
+  --ff-body:  'DM Sans', 'Roboto', sans-serif;
+  --transition: .18s cubic-bezier(.4,0,.2,1);
+}
+
+html, body {
+  height: 100%;
+  font-family: var(--ff-body);
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.6;
+  color-scheme: light;
+}
+
+/* ── STATUS BADGES ── */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.72rem;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: 500;
+  white-space: nowrap;
+
+  &::before { content: '●'; font-size: 8px; }
+  &.s-agendado   { background: #e8f2ff; color: #1d5fa6; }
+  &.s-no-banho   { background: #f3e8ff; color: #7c3aed; }
+  &.s-finalizado { background: #e6f7ef; color: #15803d; }
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

@@ -1,0 +1,83 @@
+<app-shell [navItems]="navItems" roleLabel="Administrador">
+
+  <div class="page">
+
+    <div class="page-header">
+      <h1>Quadro de Agendamentos</h1>
+      <p>Arraste ou avance os cards para atualizar o status dos pets.</p>
+    </div>
+
+    <ng-container *ngIf="agendamentos$ | async as agendamentos">
+
+      <!-- Stats row -->
+      <div class="stats-row">
+        <div class="stat-card" *ngFor="let col of colunas">
+          <span class="stat-icon material-icons" [style.color]="col.accentColor">{{ col.icon }}</span>
+          <span class="stat-value">{{ getByStatus(agendamentos, col.status).length }}</span>
+          <span class="stat-label">{{ col.label }}</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-icon material-icons" style="color: var(--amber)">event_note</span>
+          <span class="stat-value">{{ agendamentos.length }}</span>
+          <span class="stat-label">Total hoje</span>
+        </div>
+      </div>
+
+      <!-- Kanban board -->
+      <div class="kanban-board">
+        <div class="kanban-col" *ngFor="let col of colunas">
+
+          <div class="kanban-col-head" [style.border-top-color]="col.accentColor">
+            <span class="material-icons col-icon" [style.color]="col.accentColor">{{ col.icon }}</span>
+            <span class="col-title">{{ col.label }}</span>
+            <span class="kanban-count" [style.background]="col.accentColor">
+              {{ getByStatus(agendamentos, col.status).length }}
+            </span>
+          </div>
+
+          <div class="kanban-cards">
+
+            <div class="kanban-card" *ngFor="let ag of getByStatus(agendamentos, col.status)">
+              <div class="kc-header">
+                <div>
+                  <div class="kc-pet">{{ ag.petNome }}</div>
+                  <div class="kc-servico">{{ ag.servico }}</div>
+                </div>
+                <span class="kc-hora">{{ ag.dataHora | date:'HH:mm' }}</span>
+              </div>
+
+              <div class="kc-dono">
+                <span class="material-icons">person</span> {{ ag.donoNome }}
+              </div>
+
+              <div class="kc-date">
+                <span class="material-icons">calendar_today</span>
+                {{ ag.dataHora | date:'dd/MM/yyyy' }}
+              </div>
+
+              <div class="kc-actions" *ngIf="col.nextStatus">
+                <button class="btn-avancar" (click)="avancar(ag, col.nextStatus!, col.nextLabel!)">
+                  <span class="material-icons">arrow_forward</span>
+                  {{ col.nextLabel }}
+                </button>
+              </div>
+
+              <div class="kc-done" *ngIf="!col.nextStatus">
+                <span class="material-icons">check_circle</span> Concluído
+              </div>
+            </div>
+
+            <div class="kanban-empty" *ngIf="getByStatus(agendamentos, col.status).length === 0">
+              <span class="material-icons">inbox</span>
+              <p>Nenhum pet aqui</p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </ng-container>
+
+  </div>
+
+</app-shell>

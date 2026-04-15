@@ -1,0 +1,42 @@
+<div class="login-screen">
+  <div class="login-box">
+
+    <div class="login-brand">
+      <div class="login-paw">
+        <span class="material-icons">pets</span>
+      </div>
+      <div>
+        <h1>PetShop</h1>
+        <span>Sistema de Gestão</span>
+      </div>
+    </div>
+
+    <p class="login-title">Bem-vindo de volta</p>
+    <p class="login-sub">Entre com suas credenciais para acessar o sistema.</p>
+
+    <div class="demo-pills">
+      <button class="demo-pill" (click)="email='joao@email.com'; senha='123'">👤 Cliente: João</button>
+      <button class="demo-pill" (click)="email='maria@email.com'; senha='123'">👤 Cliente: Maria</button>
+      <button class="demo-pill" (click)="email='admin@petshop.com'; senha='admin'">🔑 Admin</button>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">E-mail</label>
+      <input class="form-input" type="email" [(ngModel)]="email" placeholder="seu@email.com" />
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Senha</label>
+      <input class="form-input" type="password" [(ngModel)]="senha" placeholder="••••••"
+             (keyup.enter)="entrar()" />
+    </div>
+
+    <p class="login-error" *ngIf="erro">{{ erro }}</p>
+
+    <button class="btn-primary" (click)="entrar()" [disabled]="loading">
+      <span class="material-icons" style="font-size:18px">login</span>
+      {{ loading ? 'Entrando...' : 'Entrar' }}
+    </button>
+
+  </div>
+</div>
